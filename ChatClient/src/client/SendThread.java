@@ -14,18 +14,18 @@ public class SendThread extends Thread {
 		super.run();
 		
 		try {
-			BufferedReader bReader = new BufferedReader(new InputStreamReader(System.in));
+			BufferedReader bufReader = new BufferedReader(new InputStreamReader(System.in));
 			PrintWriter sendWriter = new PrintWriter(send_socket.getOutputStream());
 			String sendStr = "";
 			
 			System.out.print("사용할 아이디를 입력하십시오 : ");
-			ChatClient.userID = bReader.readLine();
+			ChatClient.userID = bufReader.readLine();
 			
 			sendWriter.println(ChatClient.userID + " 입장");
 			sendWriter.flush();
 			
 			while (true) {
-				sendStr = bReader.readLine();
+				sendStr = bufReader.readLine();
 				
 				if (sendStr.equals("exit"))
 					break;
@@ -35,7 +35,7 @@ public class SendThread extends Thread {
 			}//////////////////////////end of while
 			
 			sendWriter.close();
-			bReader.close();
+			bufReader.close();
 			send_socket.close();
 			
 		} catch (Exception e) {

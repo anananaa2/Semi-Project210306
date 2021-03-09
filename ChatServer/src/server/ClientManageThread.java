@@ -23,7 +23,7 @@ public class ClientManageThread extends Thread {
 			while(true) {
 				msg = bufReader.readLine();
 				
-				System.out.println(msg);
+//				System.out.println(msg);
 				
 				if (msg == null) {
 					System.out.println(manage_id + " 퇴장");
@@ -37,7 +37,7 @@ public class ClientManageThread extends Thread {
 				
 				String[] split = msg.split(" ");
 				
-				if (split.length == 2 && split[0].equals("manage_id")) {
+				if (split.length == 2 && split[0].equals(manage_id)) {
 					manage_id = split[1];
 					System.out.println("아니 시발 여길 가긴 함?? " + split[1]);
 					

@@ -14,13 +14,13 @@ public class ReceiveThread extends Thread {
 		super.run();
 		
 		try {
-			BufferedReader bReader = new BufferedReader(new InputStreamReader(r_socket.getInputStream()));
+			BufferedReader bufReader = new BufferedReader(new InputStreamReader(r_socket.getInputStream()));
 			
 			String receiveStr = "";
 			String[] split;
 			
 			while(true) {
-				receiveStr = bReader.readLine();
+				receiveStr = bufReader.readLine();
 				
 				split = receiveStr.split("]");
 				
