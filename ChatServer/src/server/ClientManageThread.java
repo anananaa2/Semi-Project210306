@@ -7,64 +7,63 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ClientManageThread extends Thread {
-	
-	private Socket manage_socket;
-	private String manage_id;
-	
+
+	private Socket manage_socket = null;
+	private String manage_id = null;
+
 	@Override
 	public void run() {
-		super.run();
-		
+
 		try {
 			BufferedReader bufReader = new BufferedReader(new InputStreamReader(manage_socket.getInputStream()));
-			
-			String msg;
-			
-			while(true) {
+			// SendThread로부터 받은 스트림 msg에 저장
+			String msg = "";
+			boolean isFlag = false;
+			String[] split = null;
+
+			while (!isFlag) {
 				msg = bufReader.readLine();
-				
-//				System.out.println(msg);
-				
+
 				if (msg == null) {
 					System.out.println(manage_id + " 퇴장");
-					
+
 					for (int i = 0; i < ChatServer.messageList.size(); ++i) {
 						ChatServer.messageList.get(i).println(manage_id + " 퇴장");
 						ChatServer.messageList.get(i).flush();
-					}/////////////////////end of for
+					} ///////////////////// end of for
 					break;
-				}/////////////////////////end of if
+				} ///////////////////////// end of if
 				
-				String[] split = msg.split(" ");
-				
+				else if (manage_id == null) {
+					split = msg.split(" "); // 처음 접속했을 경우 '아이디', '입장'
+					manage_id = split[0]; // 일단 처음에는 아이디가 저장됨
+					split[0] = "";
+				}
+
 				if (split.length == 2 && split[0].equals(manage_id)) {
-					manage_id = split[1];
-					System.out.println("아니 시발 여길 가긴 함?? " + split[1]);
-					
-					///////////////////여기까지 했음//////////////////
-					System.out.println(manage_id + " 입장");
-					
-					for (int i = 0; i < ChatServer.messageList.size(); ++i) {
+					System.out.println(manage_id + "입장"); // 서버에 쏴주는 입장메시지
+
+					for (int i = 0; i < ChatServer.messageList.size(); ++i) { // 클라에게 쏴주는 입장메시지
 						ChatServer.messageList.get(i).println(manage_id + " 입장");
 						ChatServer.messageList.get(i).flush();
-					}////////////////////end of for
+					} //////////////////// end of for
 					continue;
-				}////////////////////////end of if
-				
+				} //////////////////////// end of if
+
 				for (int i = 0; i < ChatServer.messageList.size(); ++i) {
 					ChatServer.messageList.get(i).println(manage_id + "] " + msg);
 					ChatServer.messageList.get(i).flush();
-				}////////////////////////end of for
-			}////////////////////////////end of while
-			
+				} //////////////////////// end of for
+			} //////////////////////////// end of while
+
 			ChatServer.messageList.remove(new PrintWriter(manage_socket.getOutputStream()));
 			manage_socket.close();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setSocket(Socket socket) {
 		manage_socket = socket;
 	}
