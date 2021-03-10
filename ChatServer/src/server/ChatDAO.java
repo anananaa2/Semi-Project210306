@@ -37,10 +37,10 @@ public class ChatDAO {
 	 * 회원가입 중복체크
 	 * 
 	 * @param id - 사용자로부터 입력받는 id
-	 * @return 아이디 받아서 DB값이랑 비교, 하나라도 일치하면 false
+	 * @return 기본 false, 아이디 받아서 DB값이랑 비교해서 하나라도 일치하면 true
 	 ***********************************************************************/
 	public boolean idCompare(String id) {
-		boolean result = true;
+		boolean isDuplicate = false;
 		Connection con = dbMgr.getConnection();
 		try {
 			String sql = "SELECT id FROM chat";
@@ -50,7 +50,7 @@ public class ChatDAO {
 			if (rs.next()) {
 				do {
 					if (rs.getString("id").equals(id)) {
-						result = false;
+						isDuplicate = true;
 						break;
 					}
 				} while (rs.next());
@@ -59,7 +59,7 @@ public class ChatDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return result;
+		return isDuplicate;
 	}
 
 	/**********************************************************************
@@ -96,7 +96,7 @@ public class ChatDAO {
 
 	/**********************************************************************
 	 * @param id - 사용자가 입력한 아이디
-	 * @return 입력한 아이디와 일치하는 레코드의 닉네임 리턴
+	 * @return 입력한 아이디와 일치하는 레코드의 닉네임
 	 ***********************************************************************/
 	public String getNickname(String id) {
 		String nickname = "";
