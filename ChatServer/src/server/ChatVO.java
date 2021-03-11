@@ -1,7 +1,8 @@
 package server;
 
 public class ChatVO {
-	private String id = null;
+	private String id 		= null;
+	private String nickname = null;
 	private String password = null;
 
 	public ChatVO() {
@@ -22,6 +23,14 @@ public class ChatVO {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	public String getPassword() {
